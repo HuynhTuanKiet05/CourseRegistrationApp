@@ -1,0 +1,74 @@
+@model CourseRegistrationApp.Models.Course
+@{
+    ViewData["Title"] = "Xóa học phần";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- Back link -->
+            <div class="mb-4">
+                <a href="/admin/courses" class="text-secondary text-decoration-none d-inline-flex align-items-center transition-all hover-primary">
+                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                    </svg>
+                    Quay lại danh sách
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient bg-danger text-white py-4 border-0 text-center">
+                    <h3 class="mb-1 fw-bold">XÓA HỌC PHẦN</h3>
+                    <p class="mb-0 text-white-50">Hành động này không thể hoàn tác. Bạn có chắc chắn?</p>
+                </div>
+                <div class="card-body p-5 bg-white text-center">
+                    <!-- Warning SVG -->
+                    <svg class="text-danger mb-4" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+
+                    <h4 class="fw-bold mb-3 text-dark">@Model.Name</h4>
+
+                    <div class="table-responsive mb-4 mx-auto" style="max-width: 400px;">
+                        <table class="table table-bordered text-start align-middle small">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light-subtle text-secondary fw-semibold">Danh mục</th>
+                                    <td>@Model.Category?.Name</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-subtle text-secondary fw-semibold">Số tín chỉ</th>
+                                    <td class="fw-bold">@Model.Credits</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light-subtle text-secondary fw-semibold">Giảng viên</th>
+                                    <td>@Model.Lecturer</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger w-100 py-3 rounded-3 fw-bold bg-gradient shadow hover-up transition-all mb-2">
+                            XÁC NHẬN XÓA
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-up:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2) !important;
+    }
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+    .hover-primary:hover {
+        color: #0d6efd !important;
+    }
+</style>

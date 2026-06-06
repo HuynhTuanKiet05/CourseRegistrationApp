@@ -1,0 +1,111 @@
+@model IEnumerable<CourseRegistrationApp.Models.Course>
+@{
+    ViewData["Title"] = "Học phần của tôi";
+}
+
+<div class="container py-4">
+    <!-- Header banner -->
+    <div class="bg-gradient bg-success text-white rounded-4 p-4 p-md-5 mb-5 shadow hero-banner-success">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-2">Học Phần Đã Đăng Ký</h1>
+            <p class="lead text-white-50">Danh sách các học phần bạn đã đăng ký thành công trong học kỳ này.</p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info border-0 shadow-sm rounded-4 text-center py-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-journal-bookmark-fill text-info mb-3" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+            </svg>
+            <h5 class="fw-bold">Bạn chưa đăng ký học phần nào!</h5>
+            <p class="text-muted mb-4">Hãy quay lại Trang chủ để tìm hiểu và lựa chọn đăng ký các học phần phù hợp.</p>
+            <a href="/home" class="btn btn-success px-4 py-2.5 rounded-3 fw-semibold shadow bg-gradient">Tìm học phần ngay</a>
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light py-3 border-0">
+                        <tr>
+                            <th class="ps-4 py-3 text-secondary text-uppercase fs-7 fw-semibold">Hình ảnh</th>
+                            <th class="py-3 text-secondary text-uppercase fs-7 fw-semibold">Tên học phần</th>
+                            <th class="py-3 text-secondary text-uppercase fs-7 fw-semibold">Danh mục</th>
+                            <th class="py-3 text-secondary text-uppercase fs-7 fw-semibold text-center">Số tín chỉ</th>
+                            <th class="py-3 text-secondary text-uppercase fs-7 fw-semibold">Giảng viên</th>
+                            <th class="pe-4 py-3 text-secondary text-uppercase fs-7 fw-semibold text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="rounded-3 overflow-hidden shadow-sm" style="width: 80px; height: 50px;">
+                                        @if (!string.IsNullOrEmpty(course.Image))
+                                        {
+                                            <img src="/images/@course.Image" class="w-100 h-100 object-fit-cover" alt="@course.Name" onerror="this.onerror=null; this.src='https://placehold.co/120x80/198754/ffffff?text=Course'" />
+                                        }
+                                        else
+                                        {
+                                            <img src="https://placehold.co/120x80/198754/ffffff?text=Course" class="w-100 h-100 object-fit-cover" alt="@course.Name" />
+                                        }
+                                    </div>
+                                </td>
+                                <td class="fw-semibold text-dark">@course.Name</td>
+                                <td>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 rounded-pill fw-medium fs-8">
+                                        @course.Category?.Name
+                                    </span>
+                                </td>
+                                <td class="text-center fw-bold">@course.Credits</td>
+                                <td class="text-secondary">@course.Lecturer</td>
+                                <td class="pe-4 text-end">
+                                    <form asp-controller="Enroll" asp-action="Remove" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn hủy đăng ký học phần này?')">
+                                        <input type="hidden" name="courseId" value="@course.Id" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm px-3 py-2 rounded-3 fw-semibold transition-all">
+                                            Hủy đăng ký
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <div class="card border-0 shadow-sm rounded-3 px-4 py-3 bg-light-subtle d-inline-block">
+                <span class="text-secondary small">Tổng số tín chỉ đã đăng ký:</span>
+                <span class="fs-5 fw-bold text-success ms-2">@Model.Sum(c => c.Credits)</span>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .hero-banner-success {
+        border-radius: 24px;
+        background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+    }
+    .fs-7 {
+        font-size: 0.8rem;
+    }
+    .fs-8 {
+        font-size: 0.75rem;
+    }
+    .table > :not(caption) > * > * {
+        padding: 1rem 0.5rem;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(25, 135, 84, 0.02);
+    }
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+</style>

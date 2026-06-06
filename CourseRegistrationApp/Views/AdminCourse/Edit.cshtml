@@ -1,0 +1,105 @@
+@model CourseRegistrationApp.Models.Course
+@{
+    ViewData["Title"] = "Chỉnh sửa học phần";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Back link -->
+            <div class="mb-4">
+                <a href="/admin/courses" class="text-secondary text-decoration-none d-inline-flex align-items-center transition-all hover-primary">
+                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                    </svg>
+                    Quay lại danh sách
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient bg-primary text-white py-4 border-0 text-center">
+                    <h3 class="mb-1 fw-bold">CHỈNH SỬA HỌC PHẦN</h3>
+                    <p class="mb-0 text-white-50">Cập nhật thông tin học phần có mã số #@Model.Id</p>
+                </div>
+                <div class="card-body p-5 bg-white">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4 alert alert-danger border-0 rounded-3 small"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Image" />
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Name" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Tên học phần" required />
+                            <label asp-for="Name" class="text-secondary">Tên học phần</label>
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-3 g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Credits" type="number" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Số tín chỉ" required />
+                                    <label asp-for="Credits" class="text-secondary">Số tín chỉ</label>
+                                    <span asp-validation-for="Credits" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select asp-for="CategoryId" class="form-select rounded-3 border-light-subtle shadow-sm" asp-items="ViewBag.CategoryId" required></select>
+                                    <label asp-for="CategoryId" class="text-secondary">Danh mục học phần</label>
+                                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Lecturer" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Tên giảng viên" required />
+                            <label asp-for="Lecturer" class="text-secondary">Giảng viên giảng dạy</label>
+                            <span asp-validation-for="Lecturer" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row align-items-center mb-4 g-3">
+                            <div class="col-md-9">
+                                <label class="form-label text-secondary fw-semibold small mb-2">Thay đổi hình ảnh</label>
+                                <input type="file" name="imageFile" class="form-control rounded-3 border-light-subtle shadow-sm py-2.5" accept="image/*" />
+                                <div class="form-text text-muted small mt-1">Để trống nếu muốn giữ nguyên ảnh hiện tại</div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label class="form-label text-secondary fw-semibold small mb-2 d-block">Ảnh hiện tại</label>
+                                <div class="rounded-3 overflow-hidden shadow-sm mx-auto" style="width: 100px; height: 60px;">
+                                    @if (!string.IsNullOrEmpty(Model.Image))
+                                    {
+                                        <img src="/images/@Model.Image" class="w-100 h-100 object-fit-cover" alt="@Model.Name" onerror="this.onerror=null; this.src='https://placehold.co/120x80/0d6efd/ffffff?text=Course'" />
+                                    }
+                                    else
+                                    {
+                                        <img src="https://placehold.co/120x80/0d6efd/ffffff?text=Course" class="w-100 h-100 object-fit-cover" alt="@Model.Name" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold bg-gradient shadow hover-up transition-all mt-2">
+                            LƯU THAY ĐỔI
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<style>
+    .hover-up:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2) !important;
+    }
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+    .hover-primary:hover {
+        color: #0d6efd !important;
+    }
+</style>

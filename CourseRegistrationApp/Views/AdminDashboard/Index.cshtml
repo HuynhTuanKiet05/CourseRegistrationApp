@@ -1,0 +1,222 @@
+@model CourseRegistrationApp.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Bảng điều khiển Admin";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-5 border-bottom pb-3">
+        <div>
+            <h1 class="fw-bold text-dark mb-1">Dashboard Thống Kê</h1>
+            <p class="text-secondary mb-0">Hệ thống tổng quan về số liệu học phần và sinh viên đăng ký.</p>
+        </div>
+        <span class="badge bg-secondary-subtle text-secondary border px-3 py-2 rounded-3 fw-medium">
+            Học kỳ: 2026.2
+        </span>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden stat-card stat-primary">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between bg-white">
+                    <div>
+                        <h6 class="text-secondary text-uppercase fs-7 fw-semibold mb-2">Tổng số học phần</h6>
+                        <h2 class="fw-bold text-dark mb-0 count-anim">@Model.TotalCourses</h2>
+                    </div>
+                    <div class="icon-circle bg-primary bg-opacity-10 text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
+                            <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden stat-card stat-success">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between bg-white">
+                    <div>
+                        <h6 class="text-secondary text-uppercase fs-7 fw-semibold mb-2">Tổng số sinh viên</h6>
+                        <h2 class="fw-bold text-dark mb-0 count-anim">@Model.TotalStudents</h2>
+                    </div>
+                    <div class="icon-circle bg-success bg-opacity-10 text-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden stat-card stat-info">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between bg-white">
+                    <div>
+                        <h6 class="text-secondary text-uppercase fs-7 fw-semibold mb-2">Tổng lượt đăng ký</h6>
+                        <h2 class="fw-bold text-dark mb-0 count-anim">@Model.TotalEnrollments</h2>
+                    </div>
+                    <div class="icon-circle bg-info bg-opacity-10 text-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart & Table section -->
+    <div class="row g-4 mb-4">
+        <!-- Visual Chart -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <h5 class="fw-bold text-dark mb-4 border-start border-primary border-3 ps-3">Biểu Đồ Đăng Ký Sinh Viên</h5>
+                <div style="position: relative; height: 320px; width: 100%;">
+                    <canvas id="enrollmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table List -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <h5 class="fw-bold text-dark mb-4 border-start border-success border-3 ps-3">Thống Kê Chi Tiết</h5>
+                <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0 small">
+                        <thead>
+                            <tr class="table-light">
+                                <th class="fw-semibold text-secondary">Tên học phần</th>
+                                <th class="fw-semibold text-secondary text-center">Số lượng SV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CourseStats.OrderByDescending(x => x.StudentCount))
+                            {
+                                <tr>
+                                    <td class="fw-medium text-dark text-truncate" style="max-width: 250px;">@item.CourseName</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill fw-bold">
+                                            @item.StudentCount
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Include Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Read course statistics data from Razor model
+            var labels = [];
+            var dataValues = [];
+            
+            @foreach (var stat in Model.CourseStats)
+            {
+                <text>
+                    labels.push("@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(stat.CourseName))");
+                    dataValues.push(@stat.StudentCount);
+                </text>
+            }
+
+            var ctx = document.getElementById('enrollmentChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số sinh viên đăng ký',
+                        data: dataValues,
+                        backgroundColor: 'rgba(13, 110, 253, 0.85)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        hoverBackgroundColor: 'rgba(13, 110, 253, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            padding: 12,
+                            cornerRadius: 8,
+                            backgroundColor: 'rgba(33, 37, 41, 0.95)'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                stepSize: 1,
+                                color: '#6c757d'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6c757d',
+                                callback: function(value, index, ticks) {
+                                    // Truncate course name for x-axis ticks readability
+                                    var label = this.getLabelForValue(value);
+                                    if (label.length > 15) {
+                                        return label.substr(0, 15) + '...';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .fs-7 {
+        font-size: 0.8rem;
+    }
+    .stat-card {
+        border-radius: 18px;
+        transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+    }
+    .stat-primary {
+        border-left: 5px solid #0d6efd !important;
+    }
+    .stat-success {
+        border-left: 5px solid #198754 !important;
+    }
+    .stat-info {
+        border-left: 5px solid #0dcaf0 !important;
+    }
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+</style>

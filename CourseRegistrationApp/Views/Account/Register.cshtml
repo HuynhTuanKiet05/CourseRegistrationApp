@@ -1,0 +1,73 @@
+@model CourseRegistrationApp.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+}
+
+<div class="row justify-content-center align-items-center min-vh-75 mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden register-card">
+            <div class="card-header bg-gradient bg-primary text-white text-center py-4 border-0">
+                <h3 class="mb-1 fw-bold">ĐĂNG KÝ HỆ THỐNG</h3>
+                <p class="mb-0 text-white-50">Tạo tài khoản đăng ký học phần mới</p>
+            </div>
+            <div class="card-body p-5 bg-white">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4 alert alert-danger border-0 rounded-3 small"></div>
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="Username" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Tên đăng nhập" required />
+                        <label asp-for="Username" class="text-secondary"></label>
+                        <span asp-validation-for="Username" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" type="email" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="name@example.com" required />
+                        <label asp-for="Email" class="text-secondary"></label>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" type="password" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Mật khẩu" required />
+                        <label asp-for="Password" class="text-secondary"></label>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control rounded-3 border-light-subtle shadow-sm" placeholder="Xác nhận mật khẩu" required />
+                        <label asp-for="ConfirmPassword" class="text-secondary"></label>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold bg-gradient shadow hover-up transition-all mb-3">
+                        ĐĂNG KÝ NGAY
+                    </button>
+
+                    <div class="text-center mt-4">
+                        <span class="text-muted small">Đã có tài khoản?</span>
+                        <a asp-action="Login" class="text-primary fw-bold text-decoration-none small ms-1 transition-all hover-underline">Đăng nhập</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<style>
+    .register-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-up:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2) !important;
+    }
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+    .hover-underline:hover {
+        text-decoration: underline !important;
+    }
+</style>

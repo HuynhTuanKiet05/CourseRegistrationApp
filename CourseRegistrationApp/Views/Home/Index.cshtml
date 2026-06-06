@@ -1,0 +1,203 @@
+@model CourseRegistrationApp.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Trang chủ - Danh sách học phần";
+}
+
+<div class="container py-4">
+    <!-- Hero Header -->
+    <div class="bg-gradient bg-primary text-white rounded-4 p-4 p-md-5 mb-5 shadow hero-banner">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-2">Hệ Thống Đăng Ký Học Phần</h1>
+            <p class="lead text-white-50">Lựa chọn các học phần trực quan, nhanh chóng và quản lý thời khóa biểu của bạn một cách tối ưu.</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card border-0 shadow-sm rounded-3 p-3 mb-5 bg-white">
+        <form method="get" action="/home" class="row g-2 align-items-center">
+            <div class="col-md-9 col-sm-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0 border-light-subtle text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </span>
+                    <input type="text" name="searchTerm" class="form-control border-start-0 border-light-subtle shadow-none py-2.5 rounded-end-3" placeholder="Nhập tên học phần để tìm kiếm..." value="@Model.SearchTerm" />
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4">
+                <button type="submit" class="btn btn-primary w-100 py-2.5 rounded-3 fw-semibold bg-gradient">Tìm kiếm</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Courses Grid -->
+    <h3 class="fw-bold mb-4 text-dark border-start border-primary border-4 ps-3">Danh Sách Học Phần</h3>
+    
+    @if (!Model.Courses.Any())
+    {
+        <div class="alert alert-warning border-0 shadow-sm rounded-4 text-center py-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-exclamation-triangle-fill text-warning mb-3" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+            </svg>
+            <h5 class="fw-bold">Không tìm thấy học phần nào!</h5>
+            <p class="text-muted mb-0">Thử lại bằng cách sử dụng từ khóa tìm kiếm khác.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            @foreach (var course in Model.Courses)
+            {
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden course-card bg-white">
+                        <div class="position-relative overflow-hidden" style="height: 200px;">
+                            @if (!string.IsNullOrEmpty(course.Image))
+                            {
+                                <img src="/images/@course.Image" class="card-img-top w-100 h-100 object-fit-cover transition-transform" alt="@course.Name" onerror="this.onerror=null; this.src='https://placehold.co/600x400/0d6efd/ffffff?text=@Uri.EscapeDataString(course.Name)'" />
+                            }
+                            else
+                            {
+                                <img src="https://placehold.co/600x400/0d6efd/ffffff?text=@Uri.EscapeDataString(course.Name)" class="card-img-top w-100 h-100 object-fit-cover transition-transform" alt="@course.Name" />
+                            }
+                            <span class="position-absolute top-0 end-0 bg-primary bg-gradient text-white fw-bold px-3 py-1.5 rounded-start-pill m-3 shadow-sm">
+                                @course.Category?.Name
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="card-title fw-bold text-dark mb-3 text-truncate-2" style="min-height: 48px;">@course.Name</h5>
+                            
+                            <div class="text-secondary small mb-3 flex-grow-1">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg class="me-2 text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                    </svg>
+                                    <span>Tín chỉ: <strong class="text-dark">@course.Credits</strong></span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <svg class="me-2 text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                                    </svg>
+                                    <span>Giảng viên: <strong class="text-dark">@course.Lecturer</strong></span>
+                                </div>
+                            </div>
+
+                            <!-- Enrollment Buttons (Câu 6) -->
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                @if (User.IsInRole("Student") || User.IsInRole("STUDENT"))
+                                {
+                                    @if (Model.EnrolledCourseIds.Contains(course.Id))
+                                    {
+                                        <form asp-controller="Enroll" asp-action="Remove" method="post" class="mt-auto">
+                                            <input type="hidden" name="courseId" value="@course.Id" />
+                                            <button type="submit" class="btn btn-outline-danger w-100 py-2.5 rounded-3 fw-bold shadow-sm transition-all hover-up-danger">
+                                                Hủy đăng ký (Unenroll)
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-controller="Enroll" asp-action="Add" method="post" class="mt-auto">
+                                            <input type="hidden" name="courseId" value="@course.Id" />
+                                            <button type="submit" class="btn btn-success w-100 py-2.5 rounded-3 fw-bold bg-gradient shadow-sm transition-all hover-up-success">
+                                                Đăng ký (Enroll)
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/home" class="btn btn-primary w-100 py-2.5 rounded-3 fw-bold bg-gradient shadow-sm transition-all hover-up mt-auto">
+                                    Đăng nhập để đăng ký
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination (Câu 1) -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav class="d-flex justify-content-center mt-5" aria-label="Course list pagination">
+                <ul class="pagination pagination-md shadow-sm rounded-3 overflow-hidden">
+                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link border-light-subtle py-2.5 px-3.5" href="/home?page=@(Model.CurrentPage - 1)&searchTerm=@Uri.EscapeDataString(Model.SearchTerm)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                            <a class="page-link border-light-subtle py-2.5 px-3.5 fw-semibold" href="/home?page=@i&searchTerm=@Uri.EscapeDataString(Model.SearchTerm)">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link border-light-subtle py-2.5 px-3.5" href="/home?page=@(Model.CurrentPage + 1)&searchTerm=@Uri.EscapeDataString(Model.SearchTerm)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    }
+</div>
+
+<style>
+    .hero-banner {
+        border-radius: 24px;
+        background: linear-gradient(135deg, #0d6efd 0%, #0a4fbe 100%);
+    }
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .course-card {
+        border-radius: 18px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+    }
+    .course-card:hover img {
+        transform: scale(1.04);
+    }
+    .transition-transform {
+        transition: transform 0.5s ease;
+    }
+    .hover-up:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(13, 110, 253, 0.15) !important;
+    }
+    .hover-up-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(25, 135, 84, 0.15) !important;
+        background-color: #157347 !important;
+    }
+    .hover-up-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(220, 53, 69, 0.15) !important;
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+    .pagination .page-link {
+        color: #0d6efd;
+        background-color: #fff;
+    }
+    .pagination .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: #fff;
+    }
+</style>
